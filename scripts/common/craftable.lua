@@ -39,11 +39,56 @@ function mod:onload(craftable)
                 iconGameObjectType = gameObject.typeIndexMap[rockType.objectTypeKey],
                 classification = constructable.classifications.craft.index,
 
-                addGameObjectInfo = {
-                    resourceTypeIndex = resource.types.rock.index,
-                    modelName = modelName,
+                outputObjectInfo = {
+                    objectTypesArray = {
+                        gameObject.typeIndexMap[rockType.objectTypeKey]
+                    }
                 },
         
+                buildSequence = craftable:createStandardBuildSequence(actionSequence.types.mine.index, tool.types.mine.index),
+                inProgressBuildModel = "craftSimple",
+                
+                skills = {
+                    required = skill.types.mining.index,
+                },
+                requiredResources = {
+                    {
+                        type = resource.types.branch.index,
+                        count = 1,
+                        afterAction = {
+                            actionTypeIndex = action.types.pickup.index,
+                            duration = 1.0,
+                        }
+                    },
+                },
+                requiredTools = {
+                    tool.types.mine.index,
+                },
+                requiredCraftAreaGroups = {
+                    craftAreaGroup.types.mine.index,
+                },
+            })
+        end
+
+        
+        -- Support for Coal Mod by niCoke
+        if resource.types["coal"] then
+            local res = resource.types["coal"]
+            local modelName = "coal"
+
+            craftable:addCraftable("mine_" .. res.key, {
+                name = res.key,
+                plural = res.plural,
+                summary = "Used as fuel in torches, campfires, and kilns.",
+                iconGameObjectType = gameObject.typeIndexMap[res.key],
+                classification = constructable.classifications.craft.index,
+
+                outputObjectInfo = {
+                    objectTypesArray = {
+                        gameObject.typeIndexMap.coal
+                    }
+                },
+
                 buildSequence = craftable:createStandardBuildSequence(actionSequence.types.mine.index, tool.types.mine.index),
                 inProgressBuildModel = "craftSimple",
                 

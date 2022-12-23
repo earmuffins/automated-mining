@@ -19,6 +19,8 @@ function mod:onload(inspectCraftPanel)
             table.insert(inspectCraftPanel.itemLists[gameObject.typeIndexMap.mine], 1, constructable.types["mine_" .. rockType.objectTypeKey].index)
         end
 
+        table.insert(inspectCraftPanel.itemLists[gameObject.typeIndexMap.mine], 1, constructable.types["mine_coal"].index)
+
         super_load(inspectCraftPanel_, serinspectUI_, inspectObjectUI_, world_, parentContainerView)
     end
 end
