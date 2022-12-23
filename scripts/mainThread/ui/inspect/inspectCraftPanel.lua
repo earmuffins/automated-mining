@@ -3,6 +3,7 @@
 
 local gameObject = mjrequire "common/gameObject"
 local constructable = mjrequire "common/constructable"
+local resource = mjrequire "common/resource"
 
 local rock = mjrequire "common/rock"
 
@@ -19,7 +20,9 @@ function mod:onload(inspectCraftPanel)
             table.insert(inspectCraftPanel.itemLists[gameObject.typeIndexMap.mine], 1, constructable.types["mine_" .. rockType.objectTypeKey].index)
         end
 
-        table.insert(inspectCraftPanel.itemLists[gameObject.typeIndexMap.mine], 1, constructable.types["mine_coal"].index)
+        if resource.types["coal"] then
+            table.insert(inspectCraftPanel.itemLists[gameObject.typeIndexMap.mine], 1, constructable.types["mine_coal"].index)
+        end
 
         super_load(inspectCraftPanel_, serinspectUI_, inspectObjectUI_, world_, parentContainerView)
     end
