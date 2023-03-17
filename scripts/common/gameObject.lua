@@ -16,6 +16,7 @@ function mod:onload(gameObject)
 
 	local automatedMining = mjrequire "automatedMining/automatedMining"
 	automatedMining.gameObject = gameObject
+	gameObject.automatedMining = automatedMining
 
 	gameObject:addGameObject("mine", {
 		name = "Mine",
