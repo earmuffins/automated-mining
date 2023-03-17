@@ -9,10 +9,14 @@ local mjm = mjrequire "common/mjm"
 local vec3 = mjm.vec3
 
 local mod = {
-    loadOrder = 10,
+    loadOrder = 1,
 }
 
 function mod:onload(gameObject)
+
+	local automatedMining = mjrequire "automatedMining/automatedMining"
+	automatedMining.gameObject = gameObject
+
 	gameObject:addGameObject("mine", {
 		name = "Mine",
 		modelName = "mine",

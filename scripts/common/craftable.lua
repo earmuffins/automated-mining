@@ -13,10 +13,10 @@ local tool = mjrequire "common/tool"
 local action = mjrequire "common/action"
 local actionSequence = mjrequire "common/actionSequence"
 
-local rock = mjrequire "common/rock"
+local automatedMining = mjrequire "automatedMining/automatedMining"
 
 local mod = {
-    loadOrder = 1,
+    loadOrder = 50,
 }
 
 function mod:onload(craftable)
@@ -25,23 +25,28 @@ function mod:onload(craftable)
     craftable.load = function(craftable_, gameObject, flora)
         super_load(craftable_, gameObject, flora)
 
-        for i, rockType in ipairs(rock.validTypes) do
+        -- Load packaged mine resources
+        automatedMining:load(gameObject)
 
-            local modelName = rockType.objectTypeKey
-            if rockType.objectTypeKey == "rock" then
-                modelName = modelName .. "1"
-            end
+        mj:log("[Automated Mining] (craftable.lua:31) Creating craftables...")
 
-            craftable:addCraftable("mine_" .. rockType.objectTypeKey, {
-                name = locale:get("craftable_" .. rockType.objectTypeKey),
-                plural = locale:get("craftable_" .. rockType.objectTypeKey .. "_plural"),
-                summary = locale:get("craftable_" .. rockType.objectTypeKey .. "_summary"),
-                iconGameObjectType = gameObject.typeIndexMap[rockType.objectTypeKey],
+        -- Add each resource in the resourceQueue to the Mine crafting area
+        for i, res in ipairs(automatedMining.resourceQueue) do
+
+            local temp = (res.options and res.options.template) or locale:get("craftable_mine_template_mine")
+            local name = (res.options and res.options.name) or locale:get("object_" .. res.objectKey)
+            name = temp:gsub("{resource}", name)
+
+            craftable:addCraftable("mine_" .. res.objectKey, {
+                name = name,
+                plural = name,
+                summary = (res.options and res.options.summary) or locale:get("craftable_mine_summary"),
+                iconGameObjectType = gameObject.typeIndexMap[res.objectKey],
                 classification = constructable.classifications.craft.index,
 
                 outputObjectInfo = {
                     objectTypesArray = {
-                        gameObject.typeIndexMap[rockType.objectTypeKey]
+                        gameObject.typeIndexMap[res.objectKey]
                     }
                 },
         
@@ -54,7 +59,7 @@ function mod:onload(craftable)
                 requiredResources = {
                     {
                         type = resource.types.branch.index,
-                        count = 1,
+                        count = (res.options and res.options.cost) or 1,
                         afterAction = {
                             actionTypeIndex = action.types.pickup.index,
                             duration = 1.0,
@@ -68,51 +73,14 @@ function mod:onload(craftable)
                     craftAreaGroup.types.mine.index,
                 },
             })
+
+            mj:log("[Automated Mining] (craftable.lua:77) Created craftable resource: " .. res.objectKey)
         end
 
-        
-        -- Support for Coal Mod by niCoke
-        if resource.types["coal"] then
-            local res = resource.types["coal"]
-            local modelName = "coal"
-
-            craftable:addCraftable("mine_" .. res.key, {
-                name = res.key,
-                plural = res.plural,
-                summary = "Used as fuel in torches, campfires, and kilns.",
-                iconGameObjectType = gameObject.typeIndexMap[res.key],
-                classification = constructable.classifications.craft.index,
-
-                outputObjectInfo = {
-                    objectTypesArray = {
-                        gameObject.typeIndexMap.coal
-                    }
-                },
-
-                buildSequence = craftable:createStandardBuildSequence(actionSequence.types.mine.index, tool.types.mine.index),
-                inProgressBuildModel = "craftSimple",
-                
-                skills = {
-                    required = skill.types.mining.index,
-                },
-                requiredResources = {
-                    {
-                        type = resource.types.branch.index,
-                        count = 1,
-                        afterAction = {
-                            actionTypeIndex = action.types.pickup.index,
-                            duration = 1.0,
-                        }
-                    },
-                },
-                requiredTools = {
-                    tool.types.mine.index,
-                },
-                requiredCraftAreaGroups = {
-                    craftAreaGroup.types.mine.index,
-                },
-            })
-        end
+        local totalCount = #automatedMining.resourceQueue
+        local presetCount = automatedMining.presetCount
+        local customCount = totalCount - presetCount
+        mj:log("[Automated Mining] (craftable.lua:80) Craftables created: " .. totalCount .. " (" .. presetCount .. " packaged / " .. customCount .. " custom)")
     end
 end
 
