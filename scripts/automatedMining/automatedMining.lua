@@ -60,7 +60,6 @@ end
 --- Adds preset resources to mines.
 --  Runs when Automated Mining inits craftable.lua.
 function mod:load(gameObject_)
-    --gameObject = gameObject_
     isAddingPresets = true
 
     
@@ -126,6 +125,18 @@ function mod:load(gameObject_)
     for i, rockType in ipairs(rock.validTypes) do
         mod:addMineResource(rockType.objectTypeKey)
     end
+    mod:addMineResource("flint", {
+        cost = 2,
+    })
+
+
+    -- Add ores
+    mod:addMineResource("copperOre", {
+        cost = 4,
+    })
+    mod:addMineResource("tinOre", {
+        cost = 4,
+    })
 
 
     -- Built-in support for Coal Mod by niCoke
@@ -137,6 +148,7 @@ function mod:load(gameObject_)
         })
     end
 
+    
     isAddingPresets = false
 end
 

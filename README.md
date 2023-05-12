@@ -4,15 +4,13 @@ Introduces mines, a workstation for renewable resources.
 
 Join the [Discord Thread](https://discord.com/channels/982162184366862336/1054746343517732915)!
 
-## Done
-- Added clay, sand, and dirt excavation
-- Created wrapper to add Mine recipes from resources (mod compatibility support)
-
-## Planned
-- Better game balance
-- Improve workstation appearance
+## Features
+- `v0.0.5` Added new ores, flint, and new stone types
+- `v0.0.4` Added clay, sand, and dirt excavation
+- `v0.0.4` Created QOL wrapper (with mod compatibility support, see below)
 
 ## Known Bugs
+- `v0.0.5` Fixed game crashing when multi-selecting mines
 - Ladder and mineshaft disappear once Mine is constructed
 
 ## Mod Support

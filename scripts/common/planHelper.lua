@@ -31,8 +31,8 @@ function mod:onload(planHelper)
         local clonePlanInfo = planHelper:getClonePlanInfo(objectInfos, tribeID)
         table.insert(plans, clonePlanInfo)
         
-        --local deconstructionPlanInfo = planHelper:getDeconstructionPlanInfo(objectInfos, tribeID, false)
-        --table.insert(plans, deconstructionPlanInfo)
+        local deconstructionPlanInfo = planHelper:getDeconstructionPlanInfo(objectInfos, tribeID, false)
+        table.insert(plans, deconstructionPlanInfo)
         
         return plans
     end

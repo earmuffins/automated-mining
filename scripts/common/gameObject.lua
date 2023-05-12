@@ -2,6 +2,7 @@
 --- @author earmuffs
 
 local typeMaps = mjrequire "common/typeMaps"
+local locale = mjrequire "common/locale"
 local snapGroup = mjrequire "common/snapGroup"
 local craftAreaGroup = mjrequire "common/craftAreaGroup"
 local pathFinding = mjrequire "common/pathFinding"
@@ -19,7 +20,8 @@ function mod:onload(gameObject)
 	gameObject.automatedMining = automatedMining
 
 	gameObject:addGameObject("mine", {
-		name = "Mine",
+		name = locale:get("object_mine"),
+		plural = locale:get("object_mine_plural"),
 		modelName = "mine",
 		scale = 1.0,
 		isCraftArea = true,
