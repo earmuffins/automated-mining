@@ -26,7 +26,7 @@ local isAddingPresets = false
 --  }
 function mod:addMineResource(objectKey, options)
     if objectKey then
-        if mod.gameObject.typeIndexMap[objectKey] then
+        if mod.gameObject.types[objectKey] then
 
             local alreadyExists = false
             for _, r in ipairs(mod.resourceQueue) do
@@ -49,7 +49,7 @@ function mod:addMineResource(objectKey, options)
                 mj:log("[Automated Mining] (automatedMining.lua:42) Craftable resource already exists: " .. objectKey)
             end
         else
-            mj:log("[Automated Mining] (automatedMining.lua:45) The resource type for '" .. objectKey .. "' does not exist. Skipping this object.")
+            mj:log("[Automated Mining] (automatedMining.lua:45) The gameObject for '" .. objectKey .. "' does not exist. Skipping this resource.")
         end
     else
         mj:log("[Automated Mining] (automatedMining.lua:48) No objectKey parameter was detected. Please visit automatedMine.lua for usage.")
