@@ -144,6 +144,9 @@ function mod:load(gameObject_)
     local rock = mjrequire "common/rock"
     for i, rockType in ipairs(rock.validTypes) do
 
+        -- Rocks
+        mod:addMineResource(rockType.objectTypeKey)
+
         -- Stone blocks
         if rockType.stoneBlockTypeKey then
             mod:addMineResource(rockType.stoneBlockTypeKey, {
@@ -151,9 +154,6 @@ function mod:load(gameObject_)
                 cost = 2,
             })
         end
-
-        -- Rocks
-        mod:addMineResource(rockType.objectTypeKey)
     end
 
     
