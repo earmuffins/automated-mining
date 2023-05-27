@@ -5,6 +5,9 @@ local typeMaps = mjrequire "common/typeMaps"
 local locale = mjrequire "common/locale"
 
 local resource = mjrequire "common/resource"
+local skill = mjrequire "common/skill"
+local tool = mjrequire "common/tool"
+local actionSequence = mjrequire "common/actionSequence"
 
 local mod = {
     resourceQueue = {},
@@ -13,6 +16,36 @@ local mod = {
 
 
 local isAddingPresets = false
+
+
+local mineTemplate = {
+    verb = locale:get("craftable_mine_template_mine"),
+    actionSequence = actionSequence.types.mine.index,
+    tool = tool.types.mine.index,
+    skill = skill.types.mining.index,
+}
+
+local extractTemplate = {
+    verb = locale:get("craftable_mine_template_extract"),
+    actionSequence = actionSequence.types.mine.index,
+    tool = tool.types.mine.index,
+    skill = skill.types.digging.index,
+}
+
+local chiselSoftTemplate = {
+    verb = locale:get("craftable_mine_template_cut"),
+    actionSequence = actionSequence.types.chiselStone.index,
+    tool = tool.types.softChiselling.index,
+    skill = skill.types.chiselStone.index,
+}
+
+local chiselHardTemplate = {
+    verb = locale:get("craftable_mine_template_cut"),
+    actionSequence = actionSequence.types.chiselStone.index,
+    tool = tool.types.hardChiselling.index,
+    skill = skill.types.chiselStone.index,
+}
+
 
 --- Add resources to mines with one simple function call.
 --  See the load function below for examples.
@@ -37,22 +70,26 @@ function mod:addMineResource(objectKey, options)
             end
 
             if not alreadyExists then
-                mj:log("[Automated Mining] (automatedMining.lua:36) Queued craftable resource: " .. objectKey)
-
+                
                 if isAddingPresets then mod.presetCount = mod.presetCount + 1 end
 
-                table.insert(mod.resourceQueue, {
+                if not options then options = {} end
+                if not options.template then options.template = mineTemplate end
+
+                table.insert(mod.resourceQueue, 1, {
                     objectKey = objectKey,
                     options = options,
                 })
+
+                mj:log("[Automated Mining] (automatedMining.lua:84) Queued craftable resource: " .. objectKey)
             else
-                mj:log("[Automated Mining] (automatedMining.lua:42) Craftable resource already exists: " .. objectKey)
+                mj:log("[Automated Mining] (automatedMining.lua:86) Craftable resource already exists: " .. objectKey)
             end
         else
-            mj:log("[Automated Mining] (automatedMining.lua:45) The gameObject for '" .. objectKey .. "' does not exist. Skipping this resource.")
+            mj:log("[Automated Mining] (automatedMining.lua:89) The gameObject for '" .. objectKey .. "' does not exist. Skipping this resource.")
         end
     else
-        mj:log("[Automated Mining] (automatedMining.lua:48) No objectKey parameter was detected. Please visit automatedMine.lua for usage.")
+        mj:log("[Automated Mining] (automatedMining.lua:92) No objectKey parameter was detected. Please visit automatedMine.lua for usage.")
     end
 end
 
@@ -68,14 +105,17 @@ function mod:load(gameObject_)
         -- Stone Pickaxe Example
         mod:addMineResource("stonePickaxe", {
 
-            -- You can override this to change the recipe's display.
-            template = "Build a {resource}",
+            -- You can override this to change the recipe's type. This is mineTemplate by default.
+            template = extractTemplate,
 
             -- You can override this to change the gameObject's display name in the recipe.
             name = "Suspicious Stone Pickaxe",
 
             -- Unlike craftables, gameObjects don't have a summary, so we can add one.
             summary = "A good pick will last you a lifetime. Unfortunately, this one will break on you very quickly.",
+
+            -- The number of resources this recipe will produce. This is 1 by default.
+            count = 2,
 
             -- The cost in branches to craft this resource. This is 1 by default.
             cost = 5,
@@ -84,58 +124,67 @@ function mod:load(gameObject_)
     end
 
 
-    -- Preset templates available:
-    --   craftable_mine_template_mine     (default)
-    --   craftable_mine_template_extract
-
-
-    -- Add clay
-    mod:addMineResource("clay", {
-        template = locale:get("craftable_mine_template_extract"),
-        cost = 3,
-    })
-
-
-    -- Add sands
-    for _, sand in ipairs({"sand", "redSand", "riverSand"}) do
-        mod:addMineResource(sand, {
-            template = locale:get("craftable_mine_template_extract"),
-            cost = 3,
-        })
-    end
-
-
-    -- Add dirts
-    mod:addMineResource("poorDirt", {
-        template = locale:get("craftable_mine_template_extract"),
-        cost = 2,
-    })
-    mod:addMineResource("dirt", {
-        template = locale:get("craftable_mine_template_extract"),
-        cost = 3,
-    })
-    mod:addMineResource("richDirt", {
-        template = locale:get("craftable_mine_template_extract"),
-        cost = 5,
-    })
-
-
-    -- Add rocks
-    local rock = mjrequire "common/rock"
-    for i, rockType in ipairs(rock.validTypes) do
-        mod:addMineResource(rockType.objectTypeKey)
-    end
-    mod:addMineResource("flint", {
-        cost = 2,
-    })
-
-
     -- Add ores
     mod:addMineResource("copperOre", {
         cost = 4,
     })
     mod:addMineResource("tinOre", {
         cost = 4,
+    })
+
+
+    -- Add flint
+    mod:addMineResource("flint", {
+        count = 2,
+        cost = 3,
+    })
+
+
+    -- Add rocks and blocks
+    local rock = mjrequire "common/rock"
+    for i, rockType in ipairs(rock.validTypes) do
+
+        -- Stone blocks
+        if rockType.stoneBlockTypeKey then
+            mod:addMineResource(rockType.stoneBlockTypeKey, {
+                template = rockType.isSoftRock and chiselSoftTemplate or chiselHardTemplate,
+                cost = 2,
+            })
+        end
+
+        -- Rocks
+        mod:addMineResource(rockType.objectTypeKey)
+    end
+
+    
+    -- Add dirts
+    mod:addMineResource("poorDirt", {
+        template = extractTemplate,
+        cost = 2,
+    })
+    mod:addMineResource("dirt", {
+        template = extractTemplate,
+        cost = 3,
+    })
+    mod:addMineResource("richDirt", {
+        template = extractTemplate,
+        cost = 5,
+    })
+
+
+    -- Add sands
+    for _, sand in ipairs({"sand", "redSand", "riverSand"}) do
+        mod:addMineResource(sand, {
+            template = extractTemplate,
+            cost = 3,
+        })
+    end
+
+    
+    -- Add clay
+    mod:addMineResource("clay", {
+        template = extractTemplate,
+        cost = 3,
     })
 
 

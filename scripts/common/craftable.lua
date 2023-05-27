@@ -33,9 +33,18 @@ function mod:onload(craftable)
         -- Add each resource in the resourceQueue to the Mine crafting area
         for i, res in ipairs(automatedMining.resourceQueue) do
 
-            local temp = (res.options and res.options.template) or locale:get("craftable_mine_template_mine")
+            local temp = (res.options and res.options.template.verb) or locale:get("craftable_mine_template_mine")
             local name = (res.options and res.options.name) or locale:get("object_" .. res.objectKey)
             name = temp:gsub("{resource}", name)
+
+            local outputArray = {}
+            for o = 1, (res.options and res.options.count) or 1, 1 do
+                table.insert(outputArray, gameObject.typeIndexMap[res.objectKey])
+            end
+
+            local actionSeq = (res.options and res.options.template and res.options.template.actionSequence) or actionSequence.types.mine.index
+            local requiredSkill = (res.options and res.options.template and res.options.template.skill) or skill.types.mining.index
+            local requiredTool = (res.options and res.options.template and res.options.template.tool) or tool.types.mine.index
 
             craftable:addCraftable("mine_" .. res.objectKey, {
                 name = name,
@@ -45,16 +54,16 @@ function mod:onload(craftable)
                 classification = constructable.classifications.craft.index,
 
                 outputObjectInfo = {
-                    objectTypesArray = {
-                        gameObject.typeIndexMap[res.objectKey]
-                    }
+                    objectTypesArray = outputArray
                 },
         
-                buildSequence = craftable:createStandardBuildSequence(actionSequence.types.mine.index, tool.types.mine.index),
+                buildSequence = craftable:createStandardBuildSequence(actionSeq, requiredTool),
                 inProgressBuildModel = "craftSimple",
                 
+                outputDisplayCount = (res.options and res.options.count) or nil,
+
                 skills = {
-                    required = skill.types.mining.index,
+                    required = requiredSkill,
                 },
                 requiredResources = {
                     {
@@ -67,20 +76,20 @@ function mod:onload(craftable)
                     },
                 },
                 requiredTools = {
-                    tool.types.mine.index,
+                    requiredTool,
                 },
                 requiredCraftAreaGroups = {
                     craftAreaGroup.types.mine.index,
                 },
             })
 
-            mj:log("[Automated Mining] (craftable.lua:77) Created craftable resource: " .. res.objectKey)
+            mj:log("[Automated Mining] (craftable.lua:86) Created craftable resource: " .. res.objectKey)
         end
 
         local totalCount = #automatedMining.resourceQueue
         local presetCount = automatedMining.presetCount
         local customCount = totalCount - presetCount
-        mj:log("[Automated Mining] (craftable.lua:80) Craftables created: " .. totalCount .. " (" .. presetCount .. " packaged / " .. customCount .. " custom)")
+        mj:log("[Automated Mining] (craftable.lua:92) Craftables created: " .. totalCount .. " (" .. presetCount .. " packaged / " .. customCount .. " custom)")
     end
 end
 

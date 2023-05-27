@@ -12,6 +12,7 @@ localizations.values = {
 
     craftable_mine_template_mine = "Mine {resource}",
     craftable_mine_template_extract = "Extract {resource}",
+    craftable_mine_template_cut = "Cut {resource}",
     craftable_mine_summary = "Task a sapien to gather this resource.",
 }
 
