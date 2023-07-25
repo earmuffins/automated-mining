@@ -42,6 +42,8 @@ function mod:onload(gameObject)
 	})
 
 	gameObject:addGameObject("build_mine", {
+		name = locale:get("object_build_mine"),
+		plural = locale:get("object_build_mine_plural"),
 		modelName = "mine",
 		scale = 1.0,
 		hasPhysics = true,
