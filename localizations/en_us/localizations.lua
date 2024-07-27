@@ -3,7 +3,7 @@ local localizations = {}
 localizations.values = {
     buildable_mine = "Mine",
     buildable_mine_plural = "Mines",
-    buildable_mine_summary = "Allows sapiens to mine a renewable supply of stone. WARNING: Can't be removed once built.",
+    buildable_mine_summary = "Allows sapiens to extract renewable raw materials.",
 
     object_mine = "Mine",
     object_mine_plural = "Mines",
@@ -13,7 +13,7 @@ localizations.values = {
     craftable_mine_template_mine = "Mine {resource}",
     craftable_mine_template_extract = "Extract {resource}",
     craftable_mine_template_cut = "Cut {resource}",
-    craftable_mine_summary = "Task a sapien to gather this resource.",
+    craftable_mine_summary = "Task a sapien to extract this resource.",
 }
 
 return localizations

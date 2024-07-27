@@ -9,8 +9,7 @@ local mod = {
 }
 
 function mod:onload(planHelper)
-    function planHelper:availablePlansForMines(objectInfos, tribeID)
-
+    function planHelper:availablePlansForMines(baseObject, objectInfos, tribeID)
         local queuedPlanInfos = planHelper:getQueuedPlanInfos(objectInfos, tribeID, false)
 
         local craftPlanInfo = {

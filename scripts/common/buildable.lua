@@ -44,8 +44,8 @@ function mod:onload(buildable)
         name = locale:get("buildable_mine"),
         plural = locale:get("buildable_mine_plural"),
         summary = locale:get("buildable_mine_summary"),
-        buildCompletionPlanIndex = plan.types.light.index,
         classification = constructable.classifications.build.index,
+
         allowYTranslation = false,
         noBuildUnderWater = true,
         requiresSlopeCheck = true,

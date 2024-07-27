@@ -32,8 +32,11 @@ function mod:onload(gameObject)
 		isPathFindingCollider = true,
 		preventGrassAndSnow = true,
 		disallowAnyCollisionsOnPlacement = true,
-		iconOverrideIconModelName = "icon_mine_2",
-		sapienLookAtOffset = vec3(0.0,mj:mToP(0.5),0.0),
+		iconOverrideIconModelName = "icon_mine",
+		sapienLookAtOffset = vec3(0.0,mj:mToP(0.2),0.0),
+		objectViewCameraOffsetFunction = function(object)
+			return vec3(0.0,0.5,1.0)
+		end,
 		markerPositions = {
 			{ 
 				worldOffset = vec3(0.0, mj:mToP(0.8), 0.0)
@@ -51,7 +54,7 @@ function mod:onload(gameObject)
 		disallowAnyCollisionsOnPlacement = true,
 		preventGrassAndSnow = true,
 		ignoreBuildRay = true,
-		iconOverrideIconModelName = "icon_mine_2",
+		iconOverrideIconModelName = "icon_mine",
 		objectViewCameraOffsetFunction = function(object)
 			return vec3(0.0,0.5,1.0)
 		end,
