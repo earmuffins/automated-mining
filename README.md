@@ -1,22 +1,33 @@
 # Automated Mining
 
-Introduces mines, workstations for renewable resources.
+Introduces a workstation for renewable resources.
 
 Join the [Discord Thread](https://discord.com/channels/982162184366862336/1054746343517732915)!
 
-## Features
-- `v0.0.7` Added French
-- `v0.0.6` Added stone blocks
-- `v0.0.5` Added new ores, flint, and new stone types
-- `v0.0.4` Added clay, sand, and dirt excavation
-- `v0.0.4` Created QOL wrapper (with mod compatibility support, see below)
+`v0.0.71` 
+-- Updated for game version 0.6.1
 
-## Issues
-- `v0.0.7` Updated for game version 0.5
-- `v0.0.61` Fixed game crashing when multi-selecting unbuilt mines
-- `v0.0.6` Fixed recipes that didn't use the correct skills
-- `v0.0.5` Fixed game crashing when multi-selecting mines
-- Ladder and mineshaft disappear once a mine is constructed
+`v0.0.7`
+-- Updated for game version 0.5
+-- Added French
+
+`v0.0.61`
+-- Fixed game crashing when multi-selecting unbuilt mines
+
+`v0.0.6`
+-- Added stone blocks
+-- Fixed recipes that didn't use the correct skills
+
+`v0.0.5`
+-- Added new ores, flint, and new stone types
+-- Fixed game crashing when multi-selecting mines
+
+`v0.0.4`
+-- Added clay, sand, and dirt excavation
+-- Created QOL wrapper (with mod compatibility support, see below)
+
+Known Issues:
+-- Ladder and mineshaft disappear once a mine is constructed
 
 ## Mod Support
 Adding your own resources is recommended in your craftable.lua shadow:

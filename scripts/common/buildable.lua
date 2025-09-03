@@ -5,7 +5,7 @@ local typeMaps = mjrequire "common/typeMaps"
 local locale = mjrequire "common/locale"
 
 local constructable = mjrequire "common/constructable"
-local snapGroup = mjrequire "common/snapGroup"
+local snapGroup = mjrequire "common/snapGroups/snapGroup"
 local resource = mjrequire "common/resource"
 local skill = mjrequire "common/skill"
 local plan = mjrequire "common/plan"

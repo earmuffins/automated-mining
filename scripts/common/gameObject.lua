@@ -3,7 +3,7 @@
 
 local typeMaps = mjrequire "common/typeMaps"
 local locale = mjrequire "common/locale"
-local snapGroup = mjrequire "common/snapGroup"
+local snapGroup = mjrequire "common/snapGroups/snapGroup"
 local craftAreaGroup = mjrequire "common/craftAreaGroup"
 local pathFinding = mjrequire "common/pathFinding"
 local mjm = mjrequire "common/mjm"

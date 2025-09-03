@@ -6,7 +6,7 @@ local locale = mjrequire "common/locale"
 
 local constructable = mjrequire "common/constructable"
 local craftAreaGroup = mjrequire "common/craftAreaGroup"
-local snapGroup = mjrequire "common/snapGroup"
+local snapGroup = mjrequire "common/snapGroups/snapGroup"
 local resource = mjrequire "common/resource"
 local skill = mjrequire "common/skill"
 local tool = mjrequire "common/tool"
